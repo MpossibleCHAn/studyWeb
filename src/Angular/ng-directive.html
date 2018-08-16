@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <title>Document</title>
+    <style>
+        code {
+            margin-left: 10px;
+        }
+        input[class*="form-control"] {
+            display: inline-block;
+            width: 300px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Hello Angular</h1>
+            <h5>About the Angular Directive</h2>
+        </div>
+        <div ng-controller="appCtrl">
+            <div class="jumbotron">
+                <h3>Main Data :</h3>
+                <p><kbd> (main) $scope.rootMsg :</kbd><code ng-bind="rootMsg"></code></p>
+                <form class="form-group">
+                    <p>
+                        <kbd> (main) $scope.componentMsg input :</kbd>
+                        <input class="form-control" type="text" ng-model="componentMsg">
+                    </p>
+                    <p><kbd> (main) $scope.componentMsg :</kbd><code ng-bind="componentMsg"></code></p>
+                </form>
+                <p><kbd> (main) $scope.num :</kbd><code ng-bind="num"></code></p>
+            </div>
+            <my-dir 
+                my-msg="componentMsg" 
+                my-func="func()" 
+                msg="{{componentMsg}}">
+                123
+            </my-dir>
+
+        </div>
+    </div>
+
+
+
+    <script src="https://cdn.bootcss.com/angular.js/1.3.0/angular.js"></script>
+    <script>
+        (function () {
+
+            angular
+                .module('app', ['dirModu'])
+                .controller('appCtrl', ['$scope', function ($scope) {
+                    $scope.rootMsg = 'hello';
+                    $scope.componentMsg = 'It is component\'s msg!';
+                    $scope.num = 0;
+                    $scope.func = function () {
+                        $scope.num += 1;
+                    }
+                }])
+
+            angular
+                .module('dirModu', [])
+                .directive('myDir', function () {
+                    return {
+                        restrict: 'EACM',
+                        replace: true,
+                        transclude: true,
+                        templateUrl: './template.html',
+                        // scope: false,
+                        // scope: {},
+                        // scope: true,
+                        scope: {
+                            msg: '@msg',
+                            myMsg: '=?',
+                            myFunc: '&',
+                        },
+                        controller: function ($scope, $element, $attrs, $transclude) {
+                            console.log($scope);
+                            console.log($attrs);
+                            console.log($element);
+                            
+                            
+                            var a = $transclude();
+                            // console.log(a);
+                            $element.append(a);
+                        },
+                        link: function (scope, element, attrs) {
+                            console.log(scope);
+                            console.log(element);
+                            
+                            console.log(JSON.stringify(element));
+                            console.log(JSON.stringify(attrs));
+                            
+                            
+                            
+                        }
+                    }
+                })
+        })()
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+<div class="jumbotron">
+    <h2>Template Data :</h2>
+    <p>
+        <kbd> (child) $scope.componentMsg: </kbd>
+        <code ng-bind="componentMsg"></code>
+    </p>
+    
+    <form class="form-group">
+        <p>
+            <kbd> (child) $scope.componentMsg input :</kbd>
+            <input class="form-control" ng-model="myMsg">
+        </p>
+        <p>
+            <kbd> (child) $scope.msg :</kbd>
+            <code ng-bind="msg"></code>
+        </p>
+        <button class="btn btn-success" ng-click="myFunc()">Func</button>
+        <!-- <ng-transclude></ng-transclude> -->
+    </form>
+</div>
+ 

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>querySelector</title>
+  </head>
+  <body>
+    <p>querySelector</p>
+    <div id="myDiv"></div>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
+
+  <script type="text/javascript">
+    var body = document.querySelector('body');
+    console.log(body);
+    var div = document.querySelector('#myDiv');
+    console.log(div);
+    var pList = document.querySelectorAll('p');
+    console.log(pList);
+    body.style.backgroundColor = 'red';
+    div.style.backgroundColor = '#fff';
+  </script>
+  </body>
+</html>

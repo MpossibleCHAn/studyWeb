@@ -1,0 +1,8 @@
+p a {
+  color: red;
+  font-size: 14px;
+}
+div {
+  display: -ms-flexbox;
+  display: flex;
+}

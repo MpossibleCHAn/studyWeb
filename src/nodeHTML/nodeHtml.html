@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!-- 注 -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>nodehtml</title>
+  </head>
+  <body>
+    <p>nodehtml</p>
+    <div id="id" title="div1Title">
+      <p>id</p>
+    </div>
+    <div class="id">
+      <p>id2</p>
+    </div>
+    <input type="radio" disabled name="c1" value="1"/>1
+    <input type="radio" name="c1" value="2"/>2
+    <input type="radio" name="c1" value="3"/>3
+    <img src="" name="imgName" alt="">
+
+
+  <script type="text/javascript">
+    var html = document.documentElement;
+
+    console.log(html);
+    console.log(document.childNodes[1]);
+    console.log(document.firstChild);
+    console.log(document.body);
+    console.log(document.doctype);
+    console.log(document.title);
+    document.title = 'hwllo';
+    console.log(document.URL);
+    console.log(document.domain);
+    console.log(document.referrer);
+    console.log(document.getElementById('id'));
+    var div1 = document.getElementById('id');
+    // div1.appendChild('<p>hello</p>')
+    console.log(document.getElementsByTagName('input'));
+    var checkboxs = document.getElementsByTagName('input');
+    console.log(checkboxs.namedItem('checkbox1'));
+    console.log(document.getElementsByTagName('*'));
+    console.log(document.links);
+    document.write('<p>hi</p>');
+    document.writeln('<p>hi</p>');
+    document.writeln('hello world');
+    document.write('<p>'+new Date()+'</p>');
+    document.write('<p>'+(new Date()).toString()+'</p>');
+    console.log(div1.getAttribute('id'));
+    console.log(div1.getAttribute('title'));
+    div1.setAttribute('title','hello');
+
+    var div2 = document.createElement('div');
+    div2.id = 'id2';
+    div2.className = 'class2';
+    console.log(div2);
+    div1.appendChild(div2)
+
+    var txt = document.createTextNode('hello chan');
+    var txt2 = document.createTextNode('hello hai');
+    console.log(txt);
+    document.getElementById('id2').appendChild(txt);
+    document.getElementById('id2').appendChild(txt2);
+
+
+  </script>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <title>angular-lr1</title>
+  </head>
+  <body >
+    <p>angular-lr1</p>
+    <div class="" ng-init="age=24" ng-controller="myCtrl">
+      <input ng-model="greet.msg">
+      <p>{{greet.msg}}</p>
+      <p ng-bind="age"></p>
+      <p>{{name}}</p>
+      <p ng-bind="name"></p>
+      <input type="text" name="" value="" ng-model="name">
+      <p ng-repeat="li in list" ng-bind="li"></p>
+      <p ng-repeat="li in list">{{li}}{{name}}</p>
+      <my-dire></my-dire>
+    </div>
+
+    <form class="" action="index.html" name="myForm">
+      Email:
+      <input type="email" name="myEmail" value="" ng-model="text"/>
+      <span ng-show="myForm.myEmail.$error.email">It isnot a legal address</span>
+    </form>
+
+  <script src="https://cdn.bootcss.com/angular.js/1.3.0/angular.js"></script>
+  <script >
+    angular.module('myApp',[])
+      .controller('myCtrl',function($scope) {
+        $scope.name = 'chanw',
+        $scope.list = [1,2,3,4]
+      })
+      .directive('myDire',function() {
+        return {
+          template:"<p>This is directive</p>"
+        }
+      })
+  </script>
+  </body>
+</html>

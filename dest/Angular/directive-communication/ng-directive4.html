@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <title>Document</title>
+    <style>
+        code {
+            margin-left: 10px;
+        }
+
+        input[class*="form-control"] {
+            display: inline-block;
+            width: 300px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Hello Angular</h1>
+            <h5>About the Angular Directive</h2>
+        </div>
+        <div ng-controller="myController">
+            <my-dir1 
+                msg="dir1Msg">
+            </my-dir1>
+        </div>
+        
+        
+        <!-- <div ng-controller="appCtrl">
+            {{name}}
+            <my-dir1></my-dir1>
+        </div> -->
+    </div>
+
+
+
+    <script src="https://cdn.bootcss.com/angular.js/1.3.0/angular.js"></script>
+    <script>
+        (function () {
+            angular
+                .module('app', ['app1'])
+                .controller('myController', function ($scope) {
+                    $scope.dir1Msg = 'himan';
+                })
+            angular
+                .module('app1', ['app2'])
+                .directive('myDir1', function () {
+                    return {
+                        restrict: 'EA',
+                        scope: {
+                            msg:'=?'
+                        },
+                        templateUrl: './tpl1.html',
+                        link: function (scope, ele, attr) {
+                            console.log(scope);
+                            console.log(ele);
+                            console.log(attr);
+                            console.log(`============================================`)
+                        }
+                    }
+                })
+
+            angular
+                .module('app2', [])
+                .directive('myDir2', function () {
+                    return {
+                        restrict: 'EA',
+                        scope: {
+                            msg: '='
+                        },
+                        templateUrl: './tpl2.html',
+                        link: function (scope, ele, attr) {
+                            console.log(scope);
+                            console.log(ele);
+                            console.log(attr);
+
+                            scope.$watch('msg',function(val) {
+                                console.log(val)
+                                // scope.msg = 'himan';
+                            })
+                        }
+
+                    }
+                })
+        })()
+
+
+
+    </script>
+</body>
+
+</html>

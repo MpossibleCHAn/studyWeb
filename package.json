@@ -1,0 +1,19 @@
+{
+  "name": "studyweb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.24.4",
+    "gulp": "^3.9.1",
+    "gulp-less": "^3.5.0",
+    "gulp-server-livereload": "^1.9.2",
+    "less-plugin-autoprefix": "^1.5.1",
+    "path": "^0.12.7"
+  }
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>vue-directive</title>
+  </head>
+  <body>
+  <div id="app">
+    <p v-text="num" v-dir:foo.bar="color"></p>
+    <button @click="add()">add</button>
+  </div>
+  <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+  <script type="text/javascript">
+
+    Vue.directive('dir',{
+      bind(el,binding,vnode) {
+        console.log('bind');
+        console.log(el,binding,vnode);
+      },
+      inserted() {
+        console.log('inserted');
+      },
+      update() {
+        console.log('update');
+      },
+      componentUpdated() {
+        console.log('componentUpdated');
+      },
+      unbind() {
+        console.log('unbind');
+      }
+    })
+
+    var app = new Vue({
+      el:'#app',
+      data:{
+        msg:'hello world',
+        num:0,
+        color:'red'
+      },
+      methods:{
+        add() {
+          this.num ++ ;
+        }
+      }
+    })
+
+    function test() {
+      console.log(1);
+    }
+  </script>
+  </body>
+</html>

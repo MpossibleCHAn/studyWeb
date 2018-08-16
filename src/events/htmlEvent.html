@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <p>htmlEvent</p>
+    <input type="text" name="" value="" onclick="console.log(this.value)">
+    <button type="button" name="button" id="btn">btn</button>
+  <script type="text/javascript">
+    var btn = document.getElementById('btn');
+    // btn.onclick = function () {
+    //   console.log(event);
+    // }
+    btn.addEventListener('click',function() {
+      console.log(event.target);
+    },false)
+  </script>
+  </body>
+</html>
