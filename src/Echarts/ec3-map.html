@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- 引入 echarts.js -->
+    <script src="https://cdn.bootcss.com/echarts/4.1.0.rc2/echarts-en.min.js"></script>
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+    var dom = document.getElementById('main');
+
+    $.get('china.json', function (chinaJson) {
+        console.log(chinaJson)
+        echarts.registerMap('china', chinaJson);
+        var mapChart = echarts.init(dom);
+        var option = {
+            // geo: {
+            //     map: 'china'
+            // }
+            series:[{
+                type: 'map',
+                map: 'china',
+                roam: true,
+                // aspectScale: 0.75
+                zoom: 1,
+                scaleLimit: {
+                    min:1.2,
+                    max:4
+                },
+                nameMap: {
+                    'china': '中国'
+                },
+                selectedMode: false,
+                label: {
+                    show: true,
+                    // formatter: '{a},{b},{c}'
+                },
+                data:[
+                    {name: '台湾', value: 20057.34},
+                    {name: '湾仔', value: 15477.48},
+                    {name: '东区', value: 31686.1},
+                    {name: '南区', value: 6992.6},
+                    {name: '油尖旺', value: 44045.49},
+                    {name: '深水埗', value: 40689.64},
+                    {name: '九龙城', value: 37659.78},
+                    {name: '黄大仙', value: 45180.97},
+                    {name: '观塘', value: 55204.26},
+                    {name: '葵青', value: 21900.9},
+                    {name: '荃湾', value: 4918.26},
+                    {name: '屯门', value: 5881.84},
+                    {name: '元朗', value: 4178.01},
+                    {name: '北区', value: 2227.92},
+                    {name: '大埔', value: 2180.98},
+                    {name: '沙田', value: 9172.94},
+                    {name: '西贡', value: 3368},
+                    {name: '离岛', value: 806.98}
+                ],
+                tooltip:{
+                    // formatter: '{a}'
+                }
+            }],
+            tooltip: {
+                show: true,
+                formatter: '{a}: {b}<br />{c}: {d}'
+            }
+        }
+        mapChart.setOption(option)
+        console.log(mapChart)
+        var map = echarts.getMap('china');
+        console.log(map)
+        var mapData = map.geoJson.features;
+        mapData.forEach(function (item) {
+            var name = item.properties.name;
+            var id = item.id;
+            console.log(`${name} is ${id}`)
+        })
+    })
+
+    </script>
+</body>
+</html>
