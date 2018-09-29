@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>HighCharts</h1>
+    <div id="container" style="width: 600px;height:400px;"></div>
+
+    <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+    <script src="http://cdn.hcharts.cn/highmaps/modules/map.js"></script> 
+    <script>
+        // 图表配置
+        var options = {
+            chart: {
+                type: 'area'
+            },
+            title: {
+                align: 'center',
+                text: '我的第一个图表',
+                floating: false,
+                margin: 10,
+                style: {
+                    color: 'red',
+                    fontSize: '20px',
+                },
+                useHTML: true
+            },
+            xAxis: {
+                categories: ['苹果', '香蕉', '橙子']   // x 轴分类
+            },
+            yAxis: {
+                title: {
+                    text: '吃水果个数'                // y 轴标题
+                }
+            },
+            series: [{                              // 数据列
+                name: '小明',                        // 数据列名
+                data: [1, 0, 4]                     // 数据
+            }, {
+                name: '小红',
+                data: [5, 7, 3]
+            }]
+        };
+        // 图表初始化函数
+        var chart = Highcharts.chart('container', options);
+    </script>
+</body>
+</html>

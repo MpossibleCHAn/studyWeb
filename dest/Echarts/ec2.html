@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <!-- 引入 echarts.js -->
+    <script src="https://cdn.bootcss.com/echarts/4.1.0.rc2/echarts-en.min.js"></script>
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var dom = document.getElementById('main');
+
+        var json = {
+            "accurate": {
+                "current_value": 0.43684935669052044,
+                "last_value": 0.2803035511151125,
+                "max": 0.30833390622662377
+            },
+            "current_range": "55.85%",
+            "current_unit_str": "",
+            "current_value": 0.4368,
+            "direction": "2",
+            "last_value": 0.2803,
+            "level": "good",
+            "max": 0.30829999999999996,
+            "name": "caton rate",
+            "range_direction": "up",
+            "threshold": {
+                "danger": {
+                    "accurate_value": 0.30833390622662377,
+                    "op": "lte",
+                    "value": 0.3083
+                },
+                "good": {
+                    "accurate_value": 0.20833390622662377,
+                    "op": "gt",
+                    "value": 0.2083
+                },
+                "warn": {
+                    "accurate_value": 0.30833390622662377,
+                    "op": "lte",
+                    "value": 0.3083
+                }
+            },
+            "type": "percent",
+            "unit": "",
+            "unit_base": 1
+        }
+
+        console.log(json)
+
+        var myChart = echarts.init(dom);
+
+        var accurate = json.accurate;
+        var max = Math.max(accurate.current_value, accurate.max);
+        // good
+        var goodItem = json.threshold.good;
+        // warn
+        var warnItem = json.threshold.warn;
+        // danger
+        var dangerItem = json.threshold.danger;
+
+        var color;
+        // 对良好，警告，危险进行处理：
+        // good的op为；小于或者小于等于，则是越小越好
+        if (goodItem.op == 'lte' || goodItem.op == 'lt') {
+            color = [
+                [goodItem.accurate_value / max, 'green'],
+                [warnItem.accurate_value / max , '#f0c430'],
+                [1, 'red']
+            ]
+        } else if (goodItem.op == 'gt' || goodItem.op == 'gte') {
+            color = [
+                [dangerItem.accurate_value / max, 'red'],
+                [warnItem.accurate_value / max , '#f0c430'],
+                [1, 'green']
+            ]
+        }
+        console.log(color)
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: 'ECharts',
+                show: false,
+                subtext: 'subtext',
+                subtextStyle: {
+                    color: '#d0d0d0',
+                    fontStyle: 'italic',
+                    fontWeight: '900',
+                    fontSize: 14,
+                    align: 'right',
+                }
+            },
+            tooltip: {},
+            toolbox: {
+                feature: {
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            series: [{
+                name: json.name,
+                type: 'gauge',
+                radius: '80%',
+                // startAngle: 90,
+                // endAngle: -180,
+                max: max.toFixed(2),
+                splitNumber:5,
+
+                axisLine: {
+                    show: true,
+                    // show: false,
+                    lineStyle: {
+                        color: color,
+                        width: 30,
+                        // shadowColor: 'rgba(0, 0, 0, 0.5)',
+                        // shadowBlur: 10,
+                        // opacity: 0.5
+                    }
+                },
+                splitLine: {
+                    // show: false
+                    lineStyle: {
+                        color: '#eee',
+                        width: 2,
+                        type: 'solid',
+
+                    }
+                },
+                axisTick: {
+                    // show: false
+                    splitNumber: 5,
+                    length: 10
+                },
+                axisLabel: {
+                    distance: 10,
+                    formatter: '{value}',
+                },
+                pointer: {
+                    // show: false
+                    width: 10
+                },
+                itemStyle: {
+                    
+                },
+                // detail: {formatter:'50%'},
+                data: [
+                    {
+                        name: json.name,
+                        value: json.current_value
+                    }
+                ]
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+</body>
+</html>
