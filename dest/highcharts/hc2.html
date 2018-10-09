@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>hc1</title>
+</head>
+<body>
+    <h1>Highcharts</h1>
+    <div id="container" style="height:450px;"></div>
+
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+    <script src="https://img.hcharts.cn/highmaps/modules/map.js"></script>
+    <script src="http://cdn.hcharts.cn/highcharts/modules/drilldown.js"></script>
+    <script>
+    Highcharts.setOptions({
+        lang: {
+            drillUpText: '< 返回 “{series.name}”'
+        }
+    });
+    var map = null,
+        geochina = 'https://data.jianshukeji.com/jsonp?filename=geochina/';
+    $.getJSON(geochina + 'china.json&callback=?', function (mapdata) {
+        console.log(mapdata)
+        var data = [];
+        // 随机数据
+        Highcharts.each(mapdata.features, function (md, index) {
+            var tmp = {
+                name: md.properties.name,
+                value: Math.floor((Math.random() * 100) + 1) // 生成 1 ~ 100 随机值
+            };
+            if (md.properties.drilldown) {
+                tmp.drilldown = md.properties.drilldown;
+            }
+            data.push(tmp);
+        });
+        console.log(data)
+        map = new Highcharts.Map('container', {
+            chart: {
+                events: {
+                    drilldown: function (e) {
+                        
+                        this.tooltip.hide();
+                        console.log(e);
+                        // 异步下钻
+                        if (e.point.drilldown) {
+                            var pointName = e.point.properties.fullname;
+                            map.showLoading('下钻中，请稍后...');
+                            // 获取二级行政地区数据并更新图表
+                            $.getJSON(geochina + e.point.drilldown + '.json&callback=?', function (data) {
+                                data = Highcharts.geojson(data);
+                                Highcharts.each(data, function (d) {
+                                    if (d.properties.drilldown) {
+                                        d.drilldown = d.properties.drilldown;
+                                    }
+                                    d.value = Math.floor((Math.random() * 100) + 1); // 生成 1 ~ 100 随机值
+                                });
+                                map.hideLoading();
+                                map.addSeriesAsDrilldown(e.point, {
+                                    name: e.point.name,
+                                    data: data,
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '{point.name}'
+                                    }
+                                });
+                                map.setTitle({
+                                    text: pointName
+                                });
+                            });
+                        }
+                    },
+                    drillup: function () {
+                        map.setTitle({
+                            text: '中国'
+                        });
+                    },
+                    click: function () {
+                        console.log(this)
+                    },
+                    selection: function (event) {
+                        // 打印 x 轴最大值及最小值（即范围）
+                        console.log(
+                            Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', event.xAxis[0].min),
+                            Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', event.xAxis[0].max)
+                        );
+                        // 打印 y 轴最大值及最小值（即范围）
+                        console.log(event.yAxis[0].min, event.yAxis[0].max);
+                    }
+                }
+            },
+            title: {
+                text: '中国地图'
+            },
+            subtitle: {
+                useHTML: true,
+                text: '点击查看 <a href="https://www.hcharts.cn/mapdata" target="_blank">地图数据及详情</a>，注意县级数据为收费数据，如果您有需要，请 <a href="https://highcharts.com.cn/data" target="_blank">联系我们购买</a>'
+            },
+            mapNavigation: {
+                enabled: true,
+                buttonOptions: {
+                    verticalAlign: 'bottom'
+                }
+            },
+            tooltip: {
+                useHTML: true,
+                headerFormat: '<table><tr><td>{point.name}</td></tr>',
+                pointFormat: '<tr><td>全称</td><td>{point.properties.fullname}</td></tr>' +
+                    '<tr><td>行政编号</td><td>{point.properties.areacode}</td></tr>' +
+                    '<tr><td>父级</td><td>{point.properties.parent}</td></tr>' +
+                    '<tr><td>经纬度</td><td>{point.properties.longitude},{point.properties.latitude}</td></tr>',
+                footerFormat: '</table>'
+            },
+            // colorAxis: {
+            //     min: 0,
+            //     minColor: '#fff',
+            //     maxColor: '#006cee',
+            //     labels:{
+            //         style:{
+            //             "color":"red","fontWeight":"bold"
+            //         }
+            //     }
+            // },
+            series: [{
+                data: data,
+                mapData: mapdata,
+                joinBy: 'name',
+                name: '中国地图',
+                states: {
+                    hover: {
+                        color: '#a4edba'
+                    }
+                }
+            }]
+        });
+    });
+
+    </script>
+</body>
+</html>
