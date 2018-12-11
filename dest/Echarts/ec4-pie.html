@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <!-- 引入 echarts.js -->
+    <script src="https://cdn.bootcss.com/echarts/4.1.0.rc2/echarts-en.min.js"></script>
+</head>
+
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var dom = document.getElementById('main');
+
+        var myChart = echarts.init(dom);
+
+        var searchItems = ['mem_usage', 'fps', 'draw_call']
+
+        var data2 = [{
+                    "key": "0-10",
+                    "doc_count": 0,
+                    "mem_usage": {
+                        "value": null
+                    },
+                    "draw_call": {
+                        "value": null
+                    }
+                },
+                {
+                    "key": "10-20",
+                    "doc_count": 2,
+                    "mem_usage": {
+                        "value": 245185538
+                    },
+                    "draw_call": {
+                        "value": 43
+                    }
+                },
+                {
+                    "key": "20-30",
+                    "doc_count": 5,
+                    "mem_usage": {
+                        "value": 245185538
+                    },
+                    "draw_call": {
+                        "value": 43
+                    }
+                },
+                {
+                    "key": "30-40",
+                    "doc_count": 9,
+                    "mem_usage": {
+                        "value": 1961484304.7777777
+                    },
+                    "draw_call": {
+                        "value": 43
+                    }
+                },
+                {
+                    "key": "40-50",
+                    "doc_count": 7,
+                    "mem_usage": {
+                        "value": 245185538
+                    },
+                    "draw_call": {
+                        "value": 43
+                    }
+                },
+                {
+                    "key": "50-101",
+                    "doc_count": 23,
+                    "mem_usage": {
+                        "value": 245194233.6521739
+                    },
+                    "draw_call": {
+                        "value": 43
+                    }
+                }
+            ];
+
+            var data = [{
+                        "key": "huawei",
+                        "doc_count": 37,
+                        "mem_usage": {
+                            "value": 603023890.918919
+                        },
+                        "fps": {
+                            "value": 10.0
+                        },
+                        "draw_call": {
+                            "value": 43.0
+                        }
+                    },
+                    {
+                        "key": "vivo",
+                        "doc_count": 5,
+                        "mem_usage": {
+                            "value": 686519506.6
+                        },
+                        "fps": {
+                            "value": 34.0
+                        },
+                        "draw_call": {
+                            "value": 43.0
+                        }
+                    },
+                    {
+                        "key": "oppo",
+                        "doc_count": 1,
+                        "mem_usage": {
+                            "value": 245185538
+                        },
+                        "fps": {
+                            "value": 44.0
+                        },
+                        "draw_call": {
+                            "value": 43.0
+                        }
+                    }
+                ],
+
+
+
+                // 指定图表的配置项和数据
+                option = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: function (item) {
+                            var data = item.data;
+                            var returnText = `${item.seriesName} ${item.name} </br> 
+                                            上报数：${item.value}  占比：${item.percent} </br>`;
+                            searchItems.forEach(ele => {
+                                returnText += `${ele}: ${data[ele].value}</br>`
+                            });
+                            return returnText;
+                        }
+                    },
+                    legend: {
+                        type: 'plain',
+                        // orient: 'vertical',
+                        right: 10,
+                        top: 20,
+                        bottom: 20,
+                        // data: data.legendData,
+                        // selected: data.selected
+                    },
+                    series: [{
+                        name: '访问来源',
+                        type: 'pie',
+                        data: handleData(data),
+                        label: {
+                            normal: {
+                                textStyle: {
+                                    color: 'rgba(255, 255, 255, 0.3)'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                lineStyle: {
+                                    color: 'rgba(255, 255, 255, 0.3)'
+                                },
+                                smooth: 0.2,
+                                length: 10,
+                                length2: 20
+                            }
+                        },
+                        // itemStyle: {
+                        //     normal: {
+                        //         color: '#c23531',
+                        //         shadowBlur: 200,
+                        //         shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        //     }
+                        // },
+
+                        animationType: 'scale',
+                        animationEasing: 'elasticOut',
+                        animationDelay: function (idx) {
+                            return Math.random() * 200;
+                        }
+                    }]
+                };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+        function handleData(data) {
+            data.forEach(ele => {
+                ele.value = ele.doc_count;
+                ele.name = ele.key;
+                delete ele.key;
+                delete ele.doc_count;
+            });
+            console.log(data);
+            return data;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>reduce</title>
+</head>
+
+<body>
+    <h2>Reduce</h2>
+    <script>
+
+        const str = '9kFZTQLbUWOjurz9IKRdeg28rYxULHWDUrIHxCY6tnHleoJ';
+        const obj = {};
+        Array.from(str).reduce((acc, cur, ind, arr) => {
+            // console.log(acc, cur, ind, arr)
+            cur in acc ? acc[cur]++ : acc[cur] = 1;
+            return acc;
+        }, obj)
+        console.log(obj)
+
+        const arr = [{
+                "name": "a1111",
+                "age": 25
+            },
+            {
+                "name": "a1",
+                "age": 26
+            },
+            {
+                "name": "a11",
+                "age": 27
+            },
+            {
+                "name": "a",
+                "age": 29
+            },
+            {
+                "name": "a11",
+                "age": 29
+            },
+            {
+                "name": "a11",
+                "age": 26
+            },
+            {
+                "name": "a111",
+                "age": 25
+            },
+            {
+                "name": "a11",
+                "age": 26
+            },
+            {
+                "name": "a1",
+                "age": 26
+            },
+            {
+                "name": "a",
+                "age": 26
+            }
+        ]
+
+        console.log(arr)
+
+        // const filter1 = (arr) => arr.filter(item => item.name.length === 3)
+        // const filter2 = (arr) => arr.filter(item => item.age > 26)
+        // const fnArr = [filter1, filter2]
+        // let arr2 = fnArr.reduce((accumulator, fn) => {
+        //     accumulator = fn(accumulator)
+        //     return accumulator
+        // }, arr)
+        // console.log(arr2)
+
+
+        // const arr2 = [];
+        // arr.reduce((arr, cur) => {
+        //     if (cur.name.length === 3
+        //         && cur.age > 26) {
+        //             arr2.push(cur);
+        //         }
+        // }, arr2)
+        // console.log(arr2)
+
+
+
+    Array.prototype.selfMap = function () {
+        console.log(this)
+        const ary = this
+        const result = []
+        const [ fn, thisArg ] = [].slice.call(arguments)
+        if (typeof fn !== 'function') {
+            throw new TypeError(fn + 'is not a function')  
+        }
+        for (let i = 0; i < ary.length; i++) {
+            result.push(fn.call(thisArg,ary, ary[i],i))
+        }
+        return result
+    }
+    
+    const a = new Array(1, 2, 3, 4)
+    let b = a.selfMap(item => item + 1) // [ 2, 3, 4, 5 ]
+    console.log(b);
+
+
+    </script>
+</body>
+
+</html>

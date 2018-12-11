@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>vue结合原生js实现拖动</title>
+<script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+<div class="ctn ctn1">
+	<div class="sub sub1" v-for="(site, index) in list1">
+   	  <div class="dragCtn fixed" :style="{ left: X+'px', top: Y+'px'}"
+           @mousedown="mousedown(site, $event)"
+           @mousemove.prevent='mousemove(site, $event)'
+           @mouseup='mouseup(site, $event)'>
+   	  	拖动我
+   	  </div>
+   </div>
+</div>
+
+<div class="ctn ctn2">
+	<div class="sub sub2" v-for="(site, index) in list2"
+          @mouseenter='mouseenter(site, $event)'>
+   	  <div class="dragCtn">
+   	  	{{ index }} : {{ site.name }}
+   	  </div>
+   </div>
+</div>
+   
+</div>
+
+<script>
+new Vue({
+  el: '#app',
+  data: {
+    list1: [{name:1, index:0}],
+    list2: [{name:'a', index:0}, {name:'b', index:1}, {name:'c', index: 2}, {name:'d', index: 3}],
+    vm:'',
+    sb_bkx: 0,
+    sb_bky: 0,
+    is_moving: false,
+    X: 0,
+    Y: 0
+  },
+  methods: {
+  	mousedown: function (site, event) {
+		var startx=event.x;
+		var starty=event.y;
+		this.sb_bkx=startx - event.target.offsetLeft;
+		this.sb_bky=starty - event.target.offsetTop;
+		this.is_moving = true;
+  	},
+  	mousemove: function (site, event) {
+  		var endx=event.x - this.sb_bkx;
+		  var endy=event.y - this.sb_bky;
+		  var _this = this
+		  if(this.is_moving){
+	    	this.X = endx;
+	    	this.Y = endy;
+      }
+  	},
+  	mouseup: function (e) {
+  	  this.is_moving = false;
+  	},
+    mouseenter: function (){
+      console.log('鼠标进入')
+    }
+  }
+})
+</script>
+
+<style>
+    .ctn{
+    	line-height: 50px;
+    	cursor: pointer;
+    	font-size: 20px;
+    	text-align: center;
+    	float: left;
+    }
+    .sub:hover{
+        background: #e6dcdc;
+        color: white;
+        width: 100px;
+    }
+   	.ctn1{
+   		border: 1px solid green;
+   		width: 100px;
+   	}
+   	.ctn2{
+   		border: 1px solid black;
+   		width: 100px;
+   		margin-left: 50px;
+   	}
+   	.fixed{
+   	  width: 100px;
+      position: fixed;
+      background: red;
+      left: 0;
+      top: 0;
+      cursor: move;
+   	}
+</style>
+</body>
+</html>

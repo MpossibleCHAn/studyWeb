@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <p>导出CSV格式</p>
+    <a id="test" onclick="clickDownload(this)" download="downlaod.csv" href="#">download</a>  
+    <button onclick="exportFn()">export</button>
+
+    <script>
+        var list = {
+                "items": [{
+                        "actor_count_ex": 32.421052631578945,
+                        "device_level": 5.105263157894737,
+                        "fps": 43.49394690363031,
+                        "name": "30-40",
+                        "ratio": "0.00%",
+                        "total": 7591314
+                    },
+                    {
+                        "actor_count_ex": 0.9867356277470897,
+                        "device_level": 5.497828210210049,
+                        "fps": 34.42934686267304,
+                        "name": "0-10",
+                        "ratio": "94.67%",
+                        "total": 7591314
+                    },
+                    {
+                        "actor_count_ex": 22.38970321355781,
+                        "device_level": 2.412234413825837,
+                        "fps": 50.70048145750371,
+                        "name": "20-30",
+                        "ratio": "0.47%",
+                        "total": 7591314
+                    }
+                ],
+                "total": 3
+            };
+
+        console.log(list)
+
+        function exportFn () {
+            var data = list.items;
+            var returnList = [];
+            for (let i = 0; i < data.length; i++) {
+                if (i == 0) {
+                    for (const key in data[i]) {
+                        if (data[i].hasOwnProperty(key)) {
+                            const element = data[i][key];
+                            if (key == 'name'||
+                                key == 'total' ||
+                                key == 'ratio') {
+                                    return false
+                                }
+                            console.log(key);
+                            returnList.push(key);
+                        }
+                    }
+                }
+                const element = data[i];
+                
+            }
+            console.log(returnList);
+        }
+        function clickDownload (aLink) {
+            console.log(list)
+
+            var data = list.items;
+
+            var headData = data[0];
+            for (const key in headData) {
+                if (headData.hasOwnProperty(key)) {
+                    const element = headData[key];
+                    if (key == 'name'||
+                        key == 'total' ||
+                        key == 'ratio') {
+                            console.log(key)
+                        }
+                }
+            }
+
+
+            // data.forEach(ele => {
+            //     for (const key in ele) {
+            //         if (ele.hasOwnProperty(key)) {
+            //             const element = ele[key];
+            //             if (key == 'name'||
+            //                 key == 'total' ||
+            //                 key == 'ratio') {
+                                
+            //                 }
+            //         }
+            //     }
+            // });
+
+
+
+
+            // var str = "栏位1,栏位2,栏位3\n值1,值2,值3";
+            // str =  encodeURIComponent(str);
+            // aLink.href = "data:text/csv;charset=utf-8,\ufeff"+str;
+            // aLink.click();
+        }
+    </script>
+</body>
+
+</html>
