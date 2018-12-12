@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Proxy</title>
+</head>
+<body>
+    <h1>Proxy</h1>
+    <script>
+        let obj = {
+            name: 'chan',
+            age: 24
+        }
+        let objProxy = new Proxy({}, {
+            get: (target, key, receiver) => {
+                console.log(target, key, receiver);
+                return Reflect.get(target, key, receiver)
+            },
+            set: (target, key, value, receiver) => {
+                console.log(target, key, receiver);
+                return Reflect.set(target, key, value, receiver)
+            }
+        })
+
+        objProxy.count = 1;
+        // ++objProxy.count;
+
+    </script>
+</body>
+</html>
