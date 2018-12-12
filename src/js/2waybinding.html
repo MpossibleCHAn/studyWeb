@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>2waybinding</title>
+</head>
+<body>
+    <h2>2waybinding</h2>
+    <script>
+        console.log('======== Object.defineProperty =======')
+
+        const data = {
+            name: ''
+        }
+
+        function say(name) {
+            if (name === 'chan') console.log('=== chan ===')
+            if (name === 'hai') console.log('=== hai ===')
+            if (name === 'fong') console.log('=== fong ===')
+        }
+
+        Object.keys(data).forEach(key => {
+            console.log(key);
+            Object.defineProperty(data, key, {
+                enumerable: true,
+                configurable: true,
+                get: () => {
+                    console.log('get')
+                },
+                set: (val) => {
+                    console.log(val)
+                    say(val)
+                }
+            })
+        })
+
+        data.name = 'chan';
+    </script>
+</body>
+</html>

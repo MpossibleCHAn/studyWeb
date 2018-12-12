@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TREE</title>
+    <style>
+        .block-div {
+            padding: 20px;
+            margin: 5px;
+            border: 1px sandybrown solid;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>tree</h1>
+        {{msg}}
+
+        <input type="text" v-model="inputTxt">
+        <button v-on:click="search">search</button>
+        <div class="block-div" v-for="(item, index) in listData" :key="index">
+            <li v-for="(val, key) in item">{{key}}:{{val}}</li>
+        </div>
+    </div>
+</body>
+
+<script src="https://cdn.bootcss.com/lodash.js/4.17.11/lodash.min.js"></script>
+<script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+<script>
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            msg: 'hello',
+            inputTxt: '',
+            listData: [],
+            trie: null,
+            url: 'https://randomuser.me/api/?results=5000&inc=gender,email,phone,cell,nat,age',
+            // url: 'https://easy-mock.com/mock/5bfc339d791edf0246129e8c/example/mock'
+        },
+        methods: {
+            init() {
+                let self = this;
+                console.log('init')
+                fetch(self.url)
+                    .then(response => {
+                        if (response.ok) return response.json()
+                        else return Promise.reject({
+                            status: response.status,
+                            statusText: response.statusText
+                        })
+                    })
+                    .then(data => {
+                        console.time('testTime')
+                        const root = new Leaf();
+                        console.log(root)
+                        console.log(data);
+                        // let results = data.projects;
+                        let results = data.results;
+                        self.listData = results;
+                        // console.log(normalize('id', results))
+                        console.log(results)
+                        results.forEach(item => {
+                            // const id = item['id'];
+                            const id = item['id'];
+                            // 取信息中的 value
+                            Object.values(item).forEach(itemValue => {
+                                // console.log(itemValue)
+                                // 将 Boolean和 Number 都转换成 String 类型
+                                const strVal = String(itemValue);
+                                // console.log(strVal)
+                                let tempRoot = root;
+                                // console.log(tempRoot)
+                                const arrVal = Array.from(strVal)
+                                // console.log(arrVal)
+                                arrVal.forEach((char, index) => {
+                                    const reachEnd = index === arrVal.length - 1;
+                                    if (!tempRoot.children[char]) {
+                                        tempRoot.children[char] = new Leaf(
+                                            reachEnd ? id : '',
+                                            char);
+                                        tempRoot = tempRoot.children[char];
+                                    } else {
+                                        if (reachEnd) {
+                                            tempRoot.children[char].share(id);
+                                        }
+                                        tempRoot = tempRoot.children[char]
+                                    }
+                                })
+                            })
+                        })
+                        console.log(root)
+                        self.trie = root;
+                        console.timeEnd('testTime')
+                    })
+                    .catch(error => console.log(error))
+            },
+            search() {
+                console.log(this)
+                console.log('list:', this.listData)
+                // searchBlurry(this.trie, this.inputTxt)
+                console.time('search')
+                this.listData = searchFn1(this.listData, this.inputTxt)
+                console.timeEnd('search')
+            },
+        },
+        mounted() {
+            this.init()
+        },
+        watch: {
+            'inputTxt': function () {
+                this.search()
+            }
+        }
+    })
+
+
+    function searchFn1 (data, word) {
+        if (!word) return false;
+        // var newData = data.map( (item) => {
+        //     for (const key in item) {
+        //         if (item.hasOwnProperty(key)) {
+        //             const ele = item[key].toString();
+        //             if (ele.indexOf(word) > 0) {
+        //                 return item;
+        //             }
+        //         }
+        //     }
+        // })
+        var list = [];
+        data.forEach( item => {
+            for (const key in item) {
+                if (item.hasOwnProperty(key)) {
+                    const ele = item[key].toString();
+                    if (ele.indexOf(word) > 0) {
+                        list.push(item)
+                    }
+                }
+            }
+        })
+        console.log(unique(list))
+        return unique(list);
+    }
+
+    class Leaf {
+        constructor(id = "", value = "") {
+            this.ids = id ? [id] : [];
+            this.value = value;
+            this.children = {};
+        }
+        share(id) {
+            this.ids.push(id);
+        }
+    }
+
+    function normalize(identify, data) {
+        const id2Val = {}
+        data.forEach(item => {
+            const idVal = item[identify];
+            id2Val[idVal] = item;
+        });
+        return id2Val;
+    }
+
+    // let url = "https://randomuser.me/api/?results=10&inc=gender,email,phone,cell,nat,age";
+    // let url = "https://easy-mock.com/mock/5bfc339d791edf0246129e8c/example/mock";
+
+
+
+
+
+
+    function searchBlurry(root, keyword, userMap) {
+        const keywordArr = Array.from(String(keyword));
+        let tempRoot = root;
+        let result = [];
+
+        for (let i = 0; i < keywordArr.length; i++) {
+            const character = keywordArr[i];
+            if (!tempRoot.children[character]) {
+            break;
+            } else {
+            tempRoot = tempRoot.children[character];
+            }
+            if (keywordArr.length - 1 === i) {
+            result = [
+                ...tempRoot.ids,
+                ...collectChildrenInsideIds(tempRoot.children)
+            ];
+            }
+        }
+        return unique(result).map(id => {
+            return userMap[id];
+        });
+    }
+
+
+    function unique (arr) {
+        const tmp = new Map();
+        return arr.filter(item => {
+            return !tmp.has(item) && tmp.set(item, 1);
+        })
+    }
+
+
+    function collectChildrenInsideIds (children) {
+        return Object.values(children).reduce((acc, child) => {
+            const result = [
+                ...acc,
+                ...(child.ids || []),
+                ...(_.isEmpty(child.children) && child.children)
+                ? []
+                : collectChildrenInsideIds(child.children)
+            ];
+            return result;
+        }, []);
+    }
+
+    
+
+    function regularSearch(searchKeyword) {
+        const regularSearchResults = [];
+        results.forEach(item => {
+            for (const key in item) {
+            const value = item[key];
+            if (String(value).startsWith(searchKeyword)) {
+                regularSearchResults.push(item);
+                break;
+            }
+            }
+        });
+        return regularSearchResults
+    }
+
+
+
+
+
+</script>
+</html>

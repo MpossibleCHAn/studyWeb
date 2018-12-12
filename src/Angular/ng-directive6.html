@@ -27,7 +27,10 @@
         <div ng-controller="appCtrl">
             <p>{{name}}</p>
             <input type="text" ng-model="name">
-            <my-dir></my-dir>
+            <!-- <my-dir></my-dir> -->
+            <div my-dir="name"></div>
+            
+            <!-- <div my-dir="hello"></div> -->
         </div>
     </div>
     <script src="https://cdn.bootcss.com/angular.js/1.3.0/angular.js"></script>
@@ -37,14 +40,16 @@
                 .module('app', ['dirApp'])
                 .controller('appCtrl', function ($scope) {
                     $scope.name = 'chanhaifong';
+                    $scope.sex = 'male';
                 })
 
             angular
                 .module('dirApp', [])
                 .directive('myDir', function () {
                     return {
+                        restrict: 'AECM',
                         // templateUrl: '../Angular/template3.html',
-                        template: '{{name}}',
+                        template: '<h1>Hello</h1><p>world</p>',
                         scope: false,
                         // link: function (scope, ele, attrs) {
                         //     console.log(scope, ele, attrs)
@@ -52,14 +57,28 @@
                         //         console.log(val)
                         //         scope.name = val;
                         //     })
+                        // },
+                        // controller: function ($scope, $ele, $attrs, $trans) {
+                        //     console.log($scope);
+                        //     console.log($ele);
+                        //     console.log($attrs);
+                        //     console.log($trans);
                         // }
-                        link: function(scope, attrs) {
-                            console.log(scope);
-                            console.log(attrs);
+                        link: function (scope, ele, attrs) {
+                            console.log(22)
+                            console.log(scope, ele, attrs)
+                            attrs.$observe('myDir', function (val) {
+                                console.log(val);
+                                scope.name = scope.$eval(val)
+                            })
+                            console.log(ele[0])
+                            
                         },
-                        controller: function ($scope) {
-                            console.log($scope);
-                        }
+                        // controller: function ($scope, $element, $attrs) {
+                        //     console.log(11)
+                        //     console.log($scope, $element, $attrs)
+                        // },
+                        
                     }
                 })
         })()

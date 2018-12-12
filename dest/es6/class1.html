@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>es6-class</title>
+</head>
+<body>
+    <h1>Class</h1>
+    <script>
+        class Point {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+            
+            toString() {
+                return `(${this.x},${this.y})`;
+            }
+        }
+
+        let p1 = new Point(1,4)
+        console.log(p1.toString())
+        console.log(typeof(Point))
+        console.log(Point.prototype)
+
+
+    </script>
+</body>
+</html>

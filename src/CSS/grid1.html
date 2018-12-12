@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .wrapper {
+            height: 500px;
+            display: grid;
+            /* grid-template-columns: [first] 40px [line2] 50px [line3] auto [line4] 50px [line5] 40px; */
+            /* grid-template-areas: "... | ..." "..."; */
+            grid-template-columns: 100px 100px 100px 100px;
+            grid-template-rows: auto;
+            grid-template-areas: 
+                "header header header header"
+                "main main . sidebar"
+                "footer footer footer footer";
+        }
+        .wrapper > div {
+            border: 1px solid #000;
+        }
+        .item1 {
+            grid-column-start: 1;
+            grid-column-end: 3;
+        } 
+        .item3 {
+            grid-row-start: 2;
+            grid-row-end: 4;
+        }
+        .item4 {
+            grid-column-start: 2;
+            grid-column-end: 4;
+        }
+
+        .item-a {
+            grid-area: header;
+        }
+        .item-b {
+            grid-area: main;
+        }
+        .item-c {
+            grid-area: sidebar;
+        }
+        .item-d {
+            grid-area: footer;
+        }
+        
+        .container {
+            display: grid;
+            height: 500px;
+            grid-template-columns: 100px 100px 100px 100px;
+            grid-template-rows: auto;
+            grid-template-areas: 
+                ". header header header"
+                "main main . sidebar"
+                ". footer footer .";
+        }
+    </style>
+</head>
+<body>
+    <h1>Grid</h1>
+    <div class="wrapper">
+        <div class="item1" style="background-color:#acf4b6">1</div>
+        <div class="item2" style="background-color:#ffe975">2</div>
+        <div class="item3" style="background-color:#5efffa">3</div>
+        <div class="item4" style="background-color:#e6b4fd">4</div>
+        <div class="item5" style="background-color:#8dfecd">5</div>
+        <div class="item6" style="background-color:#fd9a5c">6</div>
+    </div>
+    <div class="container">
+        <div class="item-a" style="background-color:#acf4b6">1</div>
+        <div class="item-b" style="background-color:#ffe975">2</div>
+        <div class="item-c" style="background-color:#5efffa">3</div>
+        <div class="item-d" style="background-color:#e6b4fd">4</div>
+    </div>
+</body>
+</html>
