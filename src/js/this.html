@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>This</title>
+</head>
+<body>
+    <h2>This</h2>
+    <script>
+        let name = 'outter'
+        let foo = {
+            name: 'inner',
+            fun: function () {
+                setTimeout(() => {
+                    console.log(this.name)
+                }, 100);
+            },
+            fun2: function () {
+                let _this = this;
+                setTimeout(function () {
+                    console.log(_this.name)
+                },100)
+            },
+            fun3: function () {
+                setTimeout(function () {
+                    console.log(this.name)   
+                }.apply(foo), 100)
+            },
+            fun4: function () {
+                setTimeout(function () {
+                    console.log(this.name)
+                }.call(foo), 100);
+            },
+            fun5: function () {
+                setTimeout(function () {
+                    console.log(this.name)
+                }.bind(foo), 100)
+            }
+        }
+        foo.fun();
+        foo.fun2();
+        foo.fun3();
+        foo.fun4();
+        foo.fun5();
+
+
+        let test = {
+            name: 'chanhaifong',
+            fn: function (a, b) {
+                console.log(a + b);
+                console.log(this)
+            }
+        }
+        
+        let t1 = test.fn;
+        t1.apply(test, [1,2])
+        t1.call(test, 1, 2)
+        t1.bind(test, 1, 2)() 
+
+
+
+        function fn1() {
+            let name = 'inner(0000)';
+            innerFun()
+            function innerFun () {
+                console.log(this.name)
+            }
+        }
+        fn1()
+
+
+    </script>
+
+</body>
+</html>
